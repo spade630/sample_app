@@ -1,0 +1,5 @@
+6.2.1 
+bundle exec rake test:prepareが動作しない。
+→rake db:create db:migrate RAILS_ENV=test
+  を実行することで解決し、テストもパスする。
+  
