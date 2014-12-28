@@ -2,4 +2,8 @@
 bundle exec rake test:prepareが動作しない。
 →rake db:create db:migrate RAILS_ENV=test
   を実行することで解決し、テストもパスする。
-  
+
+9.2.2
+リスト9.13 expect(response).to redirect_to(path)の
+構文がエラーになる。
+→http://stackoverflow.com/questions/25313115/rspec-rails-capybara-response-object
