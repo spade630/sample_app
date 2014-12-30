@@ -27,6 +27,27 @@ describe "Micropost Pages" do
       it "should create a micropost" do
         expect { click_button "Post" }.to change(Micropost, :count).by(1)
       end
+
+      describe "post 1 micropost" do
+        before do
+          fill_in "micropost_content", with: "hoge"
+          click_button "Post"
+        end
+
+        it { should have_content('1 micropost') }
+        it { should_not have_content('1 microposts') }
+      end
+
+      describe "post 2 microposts" do
+        before do
+          fill_in "micropost_content", with: "piyo"
+          click_button "Post"
+          fill_in "micropost_content", with: "piyo"
+          click_button "Post"
+        end
+
+        it { should have_content('2 microposts') }
+      end
     end
   end
   
@@ -40,5 +61,31 @@ describe "Micropost Pages" do
         expect { click_link "delete" }.to change(Micropost, :count).by(-1)
       end
     end
+  end
+
+  describe "pagenation" do
+    before do
+      35.times { FactoryGirl.create(:micropost, user: user) } 
+      visit root_path
+    end
+    after { Micropost.delete_all }
+
+    it { should have_selector('div.pagination') }
+
+    it "should list each micropost" do
+      user.microposts.paginate(page: 1).each do |micropost|
+        expect(page).to have_selector('li', text: micropost.content)
+      end
+    end
+  end
+
+  describe "micropost of other user without delete link " do
+    let(:other_user) { FactoryGirl.create(:user) }
+    before do
+      FactoryGirl.create(:micropost, user: user)
+      visit user_path(other_user)
+    end
+
+    it { should_not have_link('delete') }
   end
 end
