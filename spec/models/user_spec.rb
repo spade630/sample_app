@@ -186,7 +186,7 @@ describe User do
 
   		it { should be_following(other_user) }
   		its(:followed_users) { should include(other_user) }
-  		
+
   		describe "followed user" do
   			subject { other_user }
   			its(:followers) { should include(@user) }
@@ -197,7 +197,7 @@ describe User do
 
   			it { should_not be_following(other_user) }
   			its(:followed_users) { should_not include(other_user) }
-  		end	
+  		end
   	end
 
   	describe "relationship associations" do
